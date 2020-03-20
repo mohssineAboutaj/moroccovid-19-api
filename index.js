@@ -105,7 +105,7 @@ router.get('/', (req, res) => {
 	request(scrapeUrl, function(requestReq, responseRes, body) {
 		let $ = cheerio.load(body);
 
-		await axios.get(helperApi).then((response) => {
+		axios.get(helperApi).then((response) => {
 			const rd = response.data;
 			data.cases = rd.cases
 			data.todayCases = rd.todayCases
