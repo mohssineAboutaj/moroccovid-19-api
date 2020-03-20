@@ -3,12 +3,12 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
-		"dev": "nodemon index.js"
+		"start": "node scrape.js && node index.js",
+		"dev": "nodemon scrape.js index.js"
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
+	"license": "MIT",
 	"description": "",
 	"dependencies": {
 		"axios": "^0.19.2",
@@ -16,7 +16,8 @@
 		"cheerio": "^1.0.0-rc.3",
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
-		"request": "^2.88.2"
+		"request": "^2.88.2",
+		"write-json": "^3.0.1"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.2"

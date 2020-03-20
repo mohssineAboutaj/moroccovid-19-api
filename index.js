@@ -3,10 +3,7 @@ const express = require('express'),
 			app = express(),
 			bodyParser = require('body-parser'),
 			port = process.env.PORT || 2021,
-			cheerio = require('cheerio'),
-			request = require('request'),
 			axios = require('axios'),
-			scrapeUrl = "http://www.covidmaroc.ma",
 			helperApi = "https://corona.lmao.ninja/countries/morocco";
 
 // use some middleware
@@ -17,7 +14,7 @@ app.use(bodyParser.json())
 const router = express.Router();
 
 // define routes
-router.get('/', (req, res) => {
+router.get('/', async function(req, res) {
 	var data = {
 		cases: 0,
 		todayCases: 0,
@@ -30,37 +27,22 @@ router.get('/', (req, res) => {
 		regions: [],
 	};
 
-	// do a request to get into from the url
-	request(scrapeUrl, async function(requestReq, responseRes, body) {
-		let $ = cheerio.load(body);
-
-		// data.regions = 
-		await $('table.ms-rteTable-6 tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
-
-			if (reg && count) {
-				await data.regions.push({ reg, count })
-			}
-		});
-
-		await axios.get(helperApi).then(response => {
-			const rd = response.data;
-			data.cases = rd.cases
-			data.todayCases = rd.todayCases
-			data.deaths = rd.deaths
-			data.todayDeaths = rd.todayDeaths
-			data.recovered = rd.recovered
-			data.active = rd.active
-			data.critical = rd.critical
-			data.casesPerOneMillion = rd.casesPerOneMillion
-		}).catch(err => {
-			console.log(err)
-		})
-	
-		res.json(data)
-
+	await axios.get(helperApi).then(response => {
+		const rd = response.data;
+		data.cases = rd.cases
+		data.todayCases = rd.todayCases
+		data.deaths = rd.deaths
+		data.todayDeaths = rd.todayDeaths
+		data.recovered = rd.recovered
+		data.active = rd.active
+		data.critical = rd.critical
+		data.casesPerOneMillion = rd.casesPerOneMillion
+	}).catch(err => {
+		console.log(err)
 	})
+
+	await res.json(data)
+
 })
 
 // use routers
