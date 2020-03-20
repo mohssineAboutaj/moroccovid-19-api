@@ -105,16 +105,6 @@ router.get('/', (req, res) => {
 	request(scrapeUrl, async function(requestReq, responseRes, body) {
 		let $ = cheerio.load(body);
 
-		// data.regions = 
-		await $('table.ms-rteTable-6 tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
-
-			if (reg && count) {
-				await data.regions.push({ reg, count })
-			}
-		});
-
 		await axios.get(helperApi).then(async function(response) {
 			const rd = await response.data;
 			data.cases = await rd.cases
@@ -129,7 +119,16 @@ router.get('/', (req, res) => {
 			console.log(err)
 		})
 	
-		await res.json(data)
+		// data.regions = 
+		await $('table.ms-rteTable-6 tr').each(async function() {
+			let reg = await $(this).find('th').text().trim(),
+					count = await parseInt($(this).find('td').text().trim());
+
+			if (reg && count) {
+				await data.regions.push({ reg, count })
+				await res.json(data)
+			}
+		});
 
 	})
 })
