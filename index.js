@@ -88,7 +88,7 @@ app.use(bodyParser.json())
 const router = express.Router();
 
 // define routes
-router.get('/', async function(req, res) {
+router.get('/', (req, res) => {
 	var data = {
 		cases: 0,
 		todayCases: 0,
@@ -102,34 +102,34 @@ router.get('/', async function(req, res) {
 	};
 
 	// do a request to get into from the url
-	await request(scrapeUrl, async function(requestReq, responseRes, body) {
+	request(scrapeUrl, function(requestReq, responseRes, body) {
 		let $ = cheerio.load(body);
 
-		await axios.get(helperApi).then(async function(response) {
-			const rd = await response.data;
-			data.cases = await rd.cases
-			data.todayCases = await rd.todayCases
-			data.deaths = await rd.deaths
-			data.todayDeaths = await rd.todayDeaths
-			data.recovered = await rd.recovered
-			data.active = await rd.active
-			data.critical = await rd.critical
-			data.casesPerOneMillion = await rd.casesPerOneMillion
+		await axios.get(helperApi).then((response) => {
+			const rd = response.data;
+			data.cases = rd.cases
+			data.todayCases = rd.todayCases
+			data.deaths = rd.deaths
+			data.todayDeaths = rd.todayDeaths
+			data.recovered = rd.recovered
+			data.active = rd.active
+			data.critical = rd.critical
+			data.casesPerOneMillion = rd.casesPerOneMillion
 		}).catch(err => {
 			console.log(err)
 		})
 	
 		// data.regions = 
-		await $('table.ms-rteTable-6 tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
+		$('table.ms-rteTable-6 tr').each(function() {
+			let reg = $(this).find('th').text().trim(),
+					count = parseInt($(this).find('td').text().trim());
 
 			if (reg && count) {
-				await data.regions.push({ reg, count })
-				await res.json(data)
+				data.regions.push({ reg, count })
 			}
 		});
 
+		res.json(data)
 	})
 })
 
