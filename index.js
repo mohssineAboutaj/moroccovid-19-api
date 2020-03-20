@@ -6,6 +6,10 @@ const express = require('express'),
 			axios = require('axios'),
 			helperApi = "https://corona.lmao.ninja/countries/morocco";
 
+const cheerio = require('cheerio'),
+			request = require('request'),
+			scrapeUrl = "http://www.covidmaroc.ma";
+
 // use some middleware
 app.use(cors())
 app.use(bodyParser.json())
@@ -27,21 +31,36 @@ router.get('/', async function(req, res) {
 		regions: [],
 	};
 
-	await axios.get(helperApi).then(response => {
-		const rd = response.data;
-		data.cases = rd.cases
-		data.todayCases = rd.todayCases
-		data.deaths = rd.deaths
-		data.todayDeaths = rd.todayDeaths
-		data.recovered = rd.recovered
-		data.active = rd.active
-		data.critical = rd.critical
-		data.casesPerOneMillion = rd.casesPerOneMillion
-	}).catch(err => {
-		console.log(err)
+	request(scrapeUrl, async function(requestReq, responseRes, body) {
+		let $ = cheerio.load(body);
+	
+		// data.regions = 
+		await $('table tr').each(async function() {
+			let reg = await $(this).find('th').text().trim(),
+					count = await parseInt($(this).find('td').text().trim());
+	
+			if (reg && count) {
+				await data.regions.push({ reg, count })
+			}
+		});
+		await res.json(data)
 	})
 
-	await res.json(data)
+	// await axios.get(helperApi).then(response => {
+	// 	const rd = response.data;
+	// 	data.cases = rd.cases
+	// 	data.todayCases = rd.todayCases
+	// 	data.deaths = rd.deaths
+	// 	data.todayDeaths = rd.todayDeaths
+	// 	data.recovered = rd.recovered
+	// 	data.active = rd.active
+	// 	data.critical = rd.critical
+	// 	data.casesPerOneMillion = rd.casesPerOneMillion
+	// }).catch(err => {
+	// 	console.log(err)
+	// })
+
+	// await res.json(data)
 
 })
 
