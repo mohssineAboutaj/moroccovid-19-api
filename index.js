@@ -88,7 +88,7 @@ app.use(bodyParser.json())
 const router = express.Router();
 
 // define routes
-router.get('/', (req, res) => {
+router.get('/', async function(req, res) {
 	var data = {
 		cases: 0,
 		todayCases: 0,
@@ -102,7 +102,7 @@ router.get('/', (req, res) => {
 	};
 
 	// do a request to get into from the url
-	request(scrapeUrl, async function(requestReq, responseRes, body) {
+	await request(scrapeUrl, async function(requestReq, responseRes, body) {
 		let $ = cheerio.load(body);
 
 		await axios.get(helperApi).then(async function(response) {
