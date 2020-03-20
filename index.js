@@ -31,20 +31,20 @@ router.get('/', (req, res) => {
 	};
 
 	// do a request to get into from the url
-	request(scrapeUrl, function(requestReq, responseRes, body) {
+	request(scrapeUrl, async function(requestReq, responseRes, body) {
 		let $ = cheerio.load(body);
 
 		// data.regions = 
-		$('table.ms-rteTable-6 tr').each(function() {
-			let reg = $(this).find('th').text().trim(),
-					count = parseInt($(this).find('td').text().trim());
+		await $('table.ms-rteTable-6 tr').each(async function() {
+			let reg = await $(this).find('th').text().trim(),
+					count = await parseInt($(this).find('td').text().trim());
 
 			if (reg && count) {
-				data.regions.push({ reg, count })
+				await data.regions.push({ reg, count })
 			}
 		});
 		
-		axios.get(helperApi).then(response => {
+		await axios.get(helperApi).then(response => {
 			const rd = response.data;
 			data.cases = rd.cases
 			data.todayCases = rd.todayCases
@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
 			console.log(err)
 		})
 	
-		res.json(data)
+		await res.json(data)
 	})
 })
 
