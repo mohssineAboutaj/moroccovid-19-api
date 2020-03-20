@@ -41,24 +41,23 @@ router.get('/', (req, res) => {
 
 			if (reg && count) {
 				await data.regions.push({ reg, count })
+				await axios.get(helperApi).then(response => {
+					const rd = response.data;
+					data.cases = rd.cases
+					data.todayCases = rd.todayCases
+					data.deaths = rd.deaths
+					data.todayDeaths = rd.todayDeaths
+					data.recovered = rd.recovered
+					data.active = rd.active
+					data.critical = rd.critical
+					data.casesPerOneMillion = rd.casesPerOneMillion
+				}).catch(err => {
+					console.log(err)
+				})
+			
+				await res.json(data)
 			}
 		});
-		
-		await axios.get(helperApi).then(response => {
-			const rd = response.data;
-			data.cases = rd.cases
-			data.todayCases = rd.todayCases
-			data.deaths = rd.deaths
-			data.todayDeaths = rd.todayDeaths
-			data.recovered = rd.recovered
-			data.active = rd.active
-			data.critical = rd.critical
-			data.casesPerOneMillion = rd.casesPerOneMillion
-		}).catch(err => {
-			console.log(err)
-		})
-	
-		await res.json(data)
 	})
 })
 
