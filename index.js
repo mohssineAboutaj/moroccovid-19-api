@@ -2,13 +2,12 @@ const express = require('express'),
 			cors = require('cors'),
 			app = express(),
 			bodyParser = require('body-parser'),
-			port = process.env.PORT || 2021,
+			port = process.env.PORT || 2020,
+			cheerio = require('cheerio'),
 			axios = require('axios'),
-			helperApi = "https://corona.lmao.ninja/countries/morocco";
-
-const cheerio = require('cheerio'),
-			request = require('request'),
+			helperApi = "https://corona.lmao.ninja/countries/morocco",
 			scrapeUrl = "http://www.covidmaroc.ma";
+
 
 // use some middleware
 app.use(cors())
@@ -31,10 +30,8 @@ router.get('/', async function(req, res) {
 		regions: [],
 	};
 
-	request(scrapeUrl, async function(requestReq, responseRes, body) {
-		let $ = cheerio.load(body);
-	
-		// data.regions = 
+	await axios.get(scrapeUrl).then(async function(response) {
+		let $ = cheerio.load(response.data)
 		await $('table tr').each(async function() {
 			let reg = await $(this).find('th').text().trim(),
 					count = await parseInt($(this).find('td').text().trim());
@@ -43,24 +40,25 @@ router.get('/', async function(req, res) {
 				await data.regions.push({ reg, count })
 			}
 		});
-		await res.json(data)
+	}).catch(err => {
+		console.log(err)
 	})
 
-	// await axios.get(helperApi).then(response => {
-	// 	const rd = response.data;
-	// 	data.cases = rd.cases
-	// 	data.todayCases = rd.todayCases
-	// 	data.deaths = rd.deaths
-	// 	data.todayDeaths = rd.todayDeaths
-	// 	data.recovered = rd.recovered
-	// 	data.active = rd.active
-	// 	data.critical = rd.critical
-	// 	data.casesPerOneMillion = rd.casesPerOneMillion
-	// }).catch(err => {
-	// 	console.log(err)
-	// })
+	await axios.get(helperApi).then(async function(response) {
+		const rd = response.data;
+		data.cases = await rd.cases
+		data.todayCases = await rd.todayCases
+		data.deaths = await rd.deaths
+		data.todayDeaths = await rd.todayDeaths
+		data.recovered = await rd.recovered
+		data.active = await rd.active
+		data.critical = await rd.critical
+		data.casesPerOneMillion = await rd.casesPerOneMillion
+	}).catch(err => {
+		console.log(err)
+	})
 
-	// await res.json(data)
+	await res.json(data)
 
 })
 
