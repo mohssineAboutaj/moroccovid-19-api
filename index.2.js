@@ -39,25 +39,25 @@ router.get('/', async function(req, res) {
 		data.active = await rd.active
 		data.critical = await rd.critical
 		data.casesPerOneMillion = await rd.casesPerOneMillion
+	}).then(async function() {
+		await axios.get(scrapeUrl).then(async function(response) {
+			let $ = await cheerio.load(response.data)
+			await $('table tr').each(async function() {
+				let reg = await $(this).find('th').text().trim(),
+						count = await parseInt($(this).find('td').text().trim());
+		
+				if (reg && count) {
+					await data.regions.push({ reg, count })
+				}
+			});
+		}).then(async function() {
+			await res.json(data)
+		}).catch(err => {
+			console.log(err)
+		})
 	}).catch(err => {
 		console.log(err)
 	})
-
-	await axios.get(scrapeUrl).then(async function(response) {
-		let $ = await cheerio.load(response.data)
-
-		await $('table tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
-	
-			if (reg && count) {
-				await data.regions.push({ reg, count })
-			}
-		});
-	}).catch(err => {
-		console.log(err)
-	})
-	await res.json(data)
 
 })
 
