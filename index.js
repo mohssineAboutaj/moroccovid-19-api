@@ -43,8 +43,10 @@ router.get('/', async function(req, res) {
 		console.log(err)
 	})
 
-	await axios.get(scrapeUrl).then(async function(response) {
-		let $ = cheerio.load(response.data)
+	await axios.get(scrapeUrl, {
+		timeout: 30000,
+	}).then(async function(response) {
+		let $ = await cheerio.load(response.data)
 		await $('table tr').each(async function() {
 			let reg = await $(this).find('th').text().trim(),
 					count = await parseInt($(this).find('td').text().trim());
@@ -53,10 +55,11 @@ router.get('/', async function(req, res) {
 				await data.regions.push({ reg, count })
 			}
 		});
-		await res.json(data)
 	}).catch(err => {
 		console.log(err)
 	})
+	
+	await res.json(data)
 
 })
 
