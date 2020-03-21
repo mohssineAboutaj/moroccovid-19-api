@@ -9,6 +9,12 @@ an api for [moroccovid-19 project](https://github.com/moroccanprogrammers/morocc
 
 *Note:* I prefer you to use `Yarn` to run scripts, but you can do any of these commands below with `npm`
 
+## API url
++ [moroccovid 19 api](https://moroccovid-19-api.herokuapp.com/)
+
+## Actions
++ *GET*: return info as json format
+
 ## Usage
 ### Install dependencies
 ```sh
