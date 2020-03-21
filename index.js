@@ -62,7 +62,7 @@ router.get('/', async function(req, res) {
 })
 
 // use routers
-app.use('', router)
+app.use('/', router)
 
 // lunch in a host
 app.listen(port, () => {
