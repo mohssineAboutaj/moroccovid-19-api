@@ -8,7 +8,6 @@ const express = require('express'),
 			helperApi = "https://corona.lmao.ninja/countries/morocco",
 			scrapeUrl = "http://www.covidmaroc.ma";
 
-
 // use some middleware
 app.use(cors())
 app.use(bodyParser.json())
@@ -30,20 +29,6 @@ router.get('/', async function(req, res) {
 		regions: [],
 	};
 
-	await axios.get(scrapeUrl).then(async function(response) {
-		let $ = cheerio.load(response.data)
-		await $('table tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
-	
-			if (reg && count) {
-				await data.regions.push({ reg, count })
-			}
-		});
-	}).catch(err => {
-		console.log(err)
-	})
-
 	await axios.get(helperApi).then(async function(response) {
 		const rd = response.data;
 		data.cases = await rd.cases
@@ -58,7 +43,20 @@ router.get('/', async function(req, res) {
 		console.log(err)
 	})
 
-	await res.json(data)
+	await axios.get(scrapeUrl).then(async function(response) {
+		let $ = cheerio.load(response.data)
+		await $('table tr').each(async function() {
+			let reg = await $(this).find('th').text().trim(),
+					count = await parseInt($(this).find('td').text().trim());
+	
+			if (reg && count) {
+				await data.regions.push({ reg, count })
+			}
+		});
+		await res.json(data)
+	}).catch(err => {
+		console.log(err)
+	})
 
 })
 
