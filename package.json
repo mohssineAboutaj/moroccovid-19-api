@@ -6,8 +6,13 @@
 		"start": "node index.js",
 		"dev": "nodemon index.js"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": [
+		"covid-19",
+		"covidmaroc",
+		"moroccovid-19 project",
+		"api"
+	],
+	"author": "Mohssine Aboutaj",
 	"license": "MIT",
 	"description": "",
 	"dependencies": {
