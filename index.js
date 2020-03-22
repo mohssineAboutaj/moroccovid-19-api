@@ -2,7 +2,7 @@ const express = require('express'),
 			cors = require('cors'),
 			app = express(),
 			bodyParser = require('body-parser'),
-			port = process.env.PORT || 2020,
+			port = process.env.PORT || 2019,
 			cheerio = require('cheerio'),
 			axios = require('axios'),
 			helperApi = "https://corona.lmao.ninja/countries/morocco",
@@ -18,7 +18,9 @@ const router = express.Router();
 // define routes
 router.get('/', async function(req, res) {
 	var data = {
+		date: "",
 		cases: 0,
+		Excluded: 0,
 		todayCases: 0,
 		deaths: 0,
 		todayDeaths: 0,
@@ -46,7 +48,12 @@ router.get('/', async function(req, res) {
 	await axios.get(scrapeUrl).then(async function(response) {
 		let $ = await cheerio.load(response.data)
 
-		await $('table tr').each(async function() {
+		// statistics
+		data.date = await $('#WebPartWPQ1 table tr').first().text().trim()
+		data.Excluded = await $('#WebPartWPQ1 table tr').last().find('td').last().text().trim()
+
+		// regions
+		await $('#WebPartWPQ2 table tr').each(async function() {
 			let reg = await $(this).find('th').text().trim(),
 					count = await parseInt($(this).find('td').text().trim());
 	
