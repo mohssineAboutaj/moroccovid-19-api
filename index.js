@@ -54,16 +54,20 @@ router.get('/', async function(req, res) {
 
 		// regions
 		await $('#WebPartWPQ2 table tr').each(async function() {
-			let reg = await $(this).find('th').text().trim(),
-					count = await parseInt($(this).find('td').text().trim());
-	
-			if (reg && count) {
-				await data.regions.push({ reg, count })
-			}
+			let reg = await $(this).find('th').text().toString().trim(),
+					count = await $(this).find('td').text().toString().trim();
+
+			// push data into region property
+			await data.regions.push({ reg, count })
 		});
 	}).catch(err => {
 		console.log(err)
 	})
+	
+	// remove firt tr (table row) because it's contain the table colums title
+	await data.regions.shift()
+
+	// return results as json
 	await res.json(data)
 
 })
