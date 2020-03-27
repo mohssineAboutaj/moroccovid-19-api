@@ -8,6 +8,12 @@ const express = require('express'),
 			helperApi = "https://corona.lmao.ninja/countries/morocco",
 			scrapeUrl = "http://www.covidmaroc.ma";
 
+// custom function to remove hex value
+function removeHex(val) {
+	const regExpToRemoveHex = /(\&.*?\;)/gi;
+	return val.replace(regExpToRemoveHex, '')
+}
+
 // use some middleware
 app.use(cors())
 app.use(bodyParser.json())
@@ -48,8 +54,13 @@ router.get('/', async function(req, res) {
 	await axios.get(scrapeUrl).then(async function(response) {
 		let $ = await cheerio.load(response.data)
 
+		// get published date
+		let pubDate = await $('#WebPartWPQ1 table tr').first().find('font').html().toString().trim()
+		// sanitize date string
+		pubDate = removeHex(pubDate).trim()
+
 		// statistics
-		data.date = await $('#WebPartWPQ1 table tr').first().text().trim()
+		data.date = pubDate
 		data.Excluded = await $('#WebPartWPQ1 table tr').last().find('td').last().text().trim()
 
 		// regions
@@ -59,7 +70,7 @@ router.get('/', async function(req, res) {
 						count = await $(this).find('td h2').html().toString().trim();
 
 				// replace a hex value that was give an error in the output
-				count = count.replace(/(\&.*?\;)/gi, '')
+				count = removeHex(count)
 
 				// convert count to number
 				count = parseInt(count)
@@ -73,6 +84,7 @@ router.get('/', async function(req, res) {
 	}).catch(err => {
 		console.log(err)
 	})
+
 	// return results as json
 	await res.json(data)
 
