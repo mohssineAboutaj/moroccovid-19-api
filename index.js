@@ -11,7 +11,7 @@ const express = require('express'),
 // custom function to remove hex value
 function removeHex(val) {
 	const regExpToRemoveHex = /(\&.*?\;)/gi;
-	return val.replace(regExpToRemoveHex, '')
+	return val.replace(regExpToRemoveHex, '').trim()
 }
 
 // use some middleware
@@ -24,6 +24,10 @@ const router = express.Router();
 // define routes
 router.get('/', async function(req, res) {
 	var data = {
+		response: {
+			status: 200,
+			statusText: "success",
+		},
 		date: "",
 		cases: 0,
 		Excluded: 0,
@@ -66,12 +70,16 @@ router.get('/', async function(req, res) {
 		// regions
 		await $('#WebPartWPQ2 table tr').each(async function() {
 			if ($(this).hasClass('ms-rteTableOddRow-6') || $(this).hasClass('ms-rteTableEvenRow-6')) {
-				let reg = await $(this).find('th').text().toString().trim(),
+				let reg = await $(this).find('th h2').html().toString().trim(),
 						count = await $(this).find('td h2').html().toString().trim();
 
 				// replace a hex value that was give an error in the output
-				count = removeHex(count)
+				reg = removeHex(reg)
+				// convert to string
+				reg = reg.toString()
 
+				// replace a hex value that was give an error in the output
+				count = removeHex(count)
 				// convert count to number
 				count = parseInt(count)
 
@@ -83,7 +91,11 @@ router.get('/', async function(req, res) {
 		});
 	}).catch(err => {
 		console.log(err)
+		// set status code
+		data.response.status = err.response.status
+		data.response.statusText = err.response.statusText
 	})
+
 
 	// return results as json
 	await res.json(data)
