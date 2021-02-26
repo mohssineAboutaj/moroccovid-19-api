@@ -1,5 +1,6 @@
 // import dependencies
 const express = require("express");
+const cors = require("cors");
 const { get } = require("axios");
 
 // variables
@@ -10,6 +11,9 @@ const port = process.env.PORT || 2019;
 
 // init app
 const app = express();
+
+// middlewars
+app.use(cors());
 
 // init express routing
 const router = express.Router();
