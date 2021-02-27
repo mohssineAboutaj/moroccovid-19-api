@@ -4,18 +4,15 @@
   - [About](#about)
   - [Requirements](#requirements)
   - [API url](#api-url)
-  - [Actions](#actions)
-  - [Returns](#returns)
+  - [Allowrd HTTP Methods](#allowrd-http-methods)
+  - [Endpoints](#endpoints)
   - [Usage](#usage)
-  - [Usage For contributors](#usage-for-contributors)
-    - [Install dependencies](#install-dependencies)
-    - [Run server/api](#run-serverapi)
-    - [Run server/api in developement mode](#run-serverapi-in-developement-mode)
+  - [Contribute](#contribute)
   - [License](#license)
 
 ## About
 
-an api for [moroccovid-19 project](https://github.com/moroccanprogrammers/moroccovid-19), it's return the statistics of covid-19 virus cases in morocco
+An api for [moroccovid-19 project](https://github.com/moroccanprogrammers/moroccovid-19), it's return the statistics of covid-19 virus cases in morocco
 
 ## Requirements
 
@@ -28,33 +25,48 @@ _Note:_ I prefer you to use `Yarn` to run scripts, but you can do any of these c
 
 - [moroccovid 19 api](https://moroccovid-19-api.herokuapp.com/)
 
-## Actions
+## Allowrd HTTP Methods
 
 - _GET_: return info as json format
 
-## Returns
+## Endpoints
 
-An object contains _Country Info_, _Covid Cases_, _Vaccined People_
+- `/`: return all the data
+- `/covid`: return covid19 statistics
+- `/vaccine`: return vaccinated people
+- `/advice`: return some advices to prevent the covid
 
 ## Usage
 
 Use your client request to fetch data
 
-## Usage For contributors
+## Contribute
 
-### Install dependencies
+- Clone
+
+```sh
+git clone https://github.com/mohssineAboutaj/moroccovid-19-api
+```
+
+- Move to the project folter
+
+```sh
+cd moroccovid-19-api
+```
+
+- Install dependencies
 
 ```sh
 yarn install
 ```
 
-### Run server/api
+- Run server/api
 
 ```sh
 yarn start
 ```
 
-### Run server/api in developement mode
+- Run server/api in developement mode
 
 ```sh
 yarn dev
