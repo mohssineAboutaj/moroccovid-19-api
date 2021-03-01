@@ -1,6 +1,11 @@
 // dependencies
 const { Router } = require("express");
-const { getAdvice, getCovid, getVaccine } = require("./helpers");
+const {
+  getCountryInfo,
+  getAdvice,
+  getCovid,
+  getVaccine,
+} = require("./helpers");
 
 // define router
 const router = Router();
@@ -12,7 +17,12 @@ router.get("/", async (req, res) => {
     covid: await getCovid(),
     vaccine: await getVaccine(),
     advice: await getAdvice(),
+    country: await getCountryInfo(),
   });
+});
+/// country info
+router.get("/country", async (req, res) => {
+  res.json(await getCountryInfo());
 });
 /// advice
 router.get("/advice", async (req, res) => {

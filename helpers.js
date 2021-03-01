@@ -7,6 +7,7 @@ const covidBaseURL = "https://disease.sh/v3/covid-19/";
 const covidURL = covidBaseURL + "countries/morocco";
 const vaccineURL = covidBaseURL + "vaccine/coverage/countries/morocco";
 const advicesURL = "http://www.covidmaroc.ma/Pages/conseilar.aspx";
+const countryInfoURL = "https://restcountries.eu/rest/v2/name/morocco";
 
 /**
  * @description get covid statistics
@@ -61,5 +62,12 @@ async function getAdvice() {
   return advice;
 }
 
+/**
+ * @description get coutry info
+ */
+async function getCountryInfo() {
+  return (await get(countryInfoURL)).data;
+}
+
 // exports
-module.exports = { getAdvice, getCovid, getVaccine };
+module.exports = { getAdvice, getCovid, getVaccine, getCountryInfo };

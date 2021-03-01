@@ -5,8 +5,8 @@
   - [Requirements](#requirements)
   - [API url](#api-url)
   - [Allowrd HTTP Methods](#allowrd-http-methods)
-  - [Endpoints](#endpoints)
   - [Usage](#usage)
+  - [Endpoints](#endpoints)
   - [Contribute](#contribute)
   - [License](#license)
 
@@ -29,16 +29,19 @@ _Note:_ I prefer you to use `Yarn` to run scripts, but you can do any of these c
 
 - _GET_: return info as json format
 
-## Endpoints
-
-- `/`: return all the data
-- `/covid`: return covid19 statistics
-- `/vaccine`: return vaccinated people
-- `/advice`: return some advices to prevent the covid
-
 ## Usage
 
 Use your client request to fetch data
+
+## Endpoints
+
+| Route    | Description                              | Response |
+| -------- | ---------------------------------------- | -------- |
+| /        | return all the data                      | Object   |
+| /covid   | return covid19 statistics                | Object   |
+| /vaccine | return vaccinated people                 | Object   |
+| /advice  | return some advices to prevent the covid | Object   |
+| /country | return country info (morocco)            | Object   |
 
 ## Contribute
 
