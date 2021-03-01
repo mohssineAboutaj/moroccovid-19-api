@@ -2,19 +2,21 @@
   "name": "moroccovid-19-api",
   "version": "1.0.0",
   "main": "index.js",
+  "author": "Mohssine Aboutaj",
+  "license": "MIT",
+  "description": "An api for moroccovid-19 project & any project thats need covid data statistitcs, it's return the statistics of covid-19 virus cases in morocco",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [
     "covid-19",
+    "covid",
+    "covid statistics",
     "covidmaroc",
     "moroccovid-19 project",
     "api"
   ],
-  "author": "Mohssine Aboutaj",
-  "license": "MIT",
-  "description": "",
   "dependencies": {
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",
@@ -23,5 +25,13 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohssineAboutaj/moroccovid-19-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mohssineAboutaj/moroccovid-19-api/issues"
+  },
+  "homepage": "https://github.com/mohssineAboutaj/moroccovid-19-api#readme"
 }

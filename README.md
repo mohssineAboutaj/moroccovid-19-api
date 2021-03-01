@@ -12,7 +12,7 @@
 
 ## About
 
-An api for [moroccovid-19 project](https://github.com/moroccanprogrammers/moroccovid-19), it's return the statistics of covid-19 virus cases in morocco
+An api for [moroccovid-19 project](https://github.com/moroccanprogrammers/moroccovid-19) & any project thats need covid data statistitcs, it's return the statistics of covid-19 virus cases in morocco
 
 ## Requirements
 
