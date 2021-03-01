@@ -35,13 +35,13 @@ Use your client request to fetch data
 
 ## Endpoints
 
-| Route    | Description                              | Response |
-| -------- | ---------------------------------------- | -------- |
-| /        | return all the data                      | Object   |
-| /covid   | return covid19 statistics                | Object   |
-| /vaccine | return vaccinated people                 | Object   |
-| /advice  | return some advices to prevent the covid | Object   |
-| /country | return country info (morocco)            | Object   |
+| Route    | Description                       | Response |
+| -------- | --------------------------------- | -------- |
+| /        | All The Data                      | Object   |
+| /covid   | Covid19 Statistics                | Object   |
+| /vaccine | Vaccinated People                 | Object   |
+| /advice  | Some Advices To Prevent The Covid | Object   |
+| /country | Country Info (Morocco)            | Object   |
 
 ## Contribute
 
