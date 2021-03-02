@@ -42,6 +42,7 @@ Use your client request to fetch data
 | /vaccine | Vaccinated People                 | Object   |
 | /advice  | Some Advices To Prevent The Covid | Object   |
 | /country | Country Info (Morocco)            | Object   |
+| /reports | Get Gov Official Reports          | Array    |
 
 ## Contribute
 

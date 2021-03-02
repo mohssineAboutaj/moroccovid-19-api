@@ -6,8 +6,10 @@ const { load } = require("cheerio");
 const covidBaseURL = "https://disease.sh/v3/covid-19/";
 const covidURL = covidBaseURL + "countries/morocco";
 const vaccineURL = covidBaseURL + "vaccine/coverage/countries/morocco";
-const advicesURL = "http://www.covidmaroc.ma/Pages/conseilar.aspx";
+const covidMarocBaseURL = "http://www.covidmaroc.ma";
 const countryInfoURL = "https://restcountries.eu/rest/v2/name/morocco";
+const advicesURL = covidMarocBaseURL + "/Pages/conseilar.aspx";
+const reportsURL = covidMarocBaseURL + "/Pages/CommuniquesAR.aspx";
 
 /**
  * @description get covid statistics
@@ -69,5 +71,37 @@ async function getCountryInfo() {
   return (await get(countryInfoURL)).data;
 }
 
+/**
+ * @description get official gov reports
+ */
+async function getReports() {
+  let reports = [];
+
+  const body = (await get(reportsURL)).data;
+  const $ = load(body);
+
+  $("h4 + table.ms-rteTable-6 a").each(function () {
+    const href = $(this).attr("href");
+    const linkText = $(this)
+      .html()
+      .replace(/(&#8203;|&nbsp;)+\S/g, " ");
+
+    // fill reports
+    reports.push({
+      label: load(linkText).text().trim(),
+      link: href && href.startsWith("http") ? href : covidMarocBaseURL + href,
+    });
+  });
+
+  // result
+  return reports;
+}
+
 // exports
-module.exports = { getAdvice, getCovid, getVaccine, getCountryInfo };
+module.exports = {
+  getAdvice,
+  getCovid,
+  getVaccine,
+  getCountryInfo,
+  getReports,
+};
