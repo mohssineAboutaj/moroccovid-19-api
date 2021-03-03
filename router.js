@@ -58,7 +58,7 @@ router.get("/advice", (req, res) => {
   let data = getAdvice();
 
   data.images.map((el, i) => {
-    data.images[i] = req.headers.host + el;
+    data.images[i] = req.protocol + "://" + req.headers.host + el;
   });
 
   res.json(data);
