@@ -1,6 +1,8 @@
 // dependencies
 const { get } = require("axios");
 const { load } = require("cheerio");
+const { readdirSync } = require("fs");
+const { hostname } = require("os");
 
 // define variables
 const covidBaseURL = "https://disease.sh/v3/covid-19/";
@@ -41,23 +43,29 @@ async function getVaccine() {
 /**
  * @description get advices from the official gov website
  */
-async function getAdvice() {
+function getAdvice() {
   const advice = { images: [] };
 
-  const body = (await get(advicesURL)).data;
-  const $ = load(body);
+  // const body = (await get(advicesURL)).data;
+  // const $ = load(body);
 
-  JSON.parse(
-    $("body script")
-      .eq(6)
-      .html()
-      .split("pictureArray = ")[1]
-      .split(";")[0]
-      .replace(/'/g, '"')
-  ).forEach((img) => {
-    if (img) {
-      advice.images.push(img);
-    }
+  // JSON.parse(
+  //   $("body script")
+  //     .eq(6)
+  //     .html()
+  //     .split("pictureArray = ")[1]
+  //     .split(";")[0]
+  //     .replace(/'/g, '"')
+  // ).forEach((img) => {
+  //   if (img) {
+  //     advice.images.push(img);
+  //   }
+  // });
+
+  const dir = "/assets/";
+
+  readdirSync(__dirname + dir).forEach((file) => {
+    advice.images.push(dir + file);
   });
 
   // result

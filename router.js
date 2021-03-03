@@ -54,8 +54,14 @@ router.get("/country", async (req, res) => {
   res.json(await getCountryInfo());
 });
 /// advice
-router.get("/advice", async (req, res) => {
-  res.json(await getAdvice());
+router.get("/advice", (req, res) => {
+  let data = getAdvice();
+
+  data.images.map((el, i) => {
+    data.images[i] = req.headers.host + el;
+  });
+
+  res.json(data);
 });
 /// covid
 router.get("/covid", async (req, res) => {
@@ -68,6 +74,10 @@ router.get("/vaccine", async (req, res) => {
 /// reports
 router.get("/reports", async (req, res) => {
   res.json(await getReports());
+});
+/// assets
+router.get("/assets/:name", async (req, res) => {
+  res.sendFile(__dirname + "/assets/" + req.params.name);
 });
 
 // exports
