@@ -77,7 +77,14 @@ router.get("/reports", async (req, res) => {
 });
 /// assets
 router.get("/assets/:name", async (req, res) => {
-  res.sendFile(__dirname + "/assets/" + req.params.name);
+  const name = req.params.name;
+  const filePath = "/assets/" + name;
+
+  if (getAdvice().images.includes(filePath)) {
+    res.sendFile(__dirname + filePath);
+  } else {
+    res.status(404).send("404 not found");
+  }
 });
 
 // exports
